@@ -1,5 +1,5 @@
 import {Container, Stack} from "@mui/material";
-import MemoInput from "./components/MemoInput";
+import NoteInput from "./components/NoteInput";
 
 function App() {
 
@@ -7,7 +7,7 @@ function App() {
     <Container>
       <Stack>
         {/*<MemoList/>*/}
-        <MemoInput/>
+        <NoteInput/>
       </Stack>
     </Container>
   );
