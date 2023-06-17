@@ -1,8 +1,13 @@
 import {Button, Stack, TextField} from "@mui/material";
 import {useState} from "react";
-import {NoteForm} from "../../types/types.ts";
+import {Note, NoteForm} from "../../types/types.ts";
 
-function NoteInput() {
+
+interface NoteInputProps {
+  setNoteList: (value: (((prevState: Note[]) => Note[]) | Note[])) => void
+}
+
+function NoteInput({setNoteList}: NoteInputProps) {
   const [newNote, setNewNote] = useState<NoteForm>({
     title: "",
     content: ""
@@ -10,6 +15,13 @@ function NoteInput() {
 
   const handleNewMemo = () => {
     console.log(newNote);
+    const note: Note = {
+      date: "",
+      id: 0,
+      ...newNote
+    }
+    // TODO: msw로 이전 예정
+    setNoteList((prevState) => [...prevState, note])
   };
 
   return (
