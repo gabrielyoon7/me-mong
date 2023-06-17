@@ -1,4 +1,5 @@
 import {Note} from "../../types/types.ts";
+import NoteCard from "../NoteCard";
 
 interface NoteListProps {
   noteList: Note[]
@@ -7,7 +8,9 @@ interface NoteListProps {
 function NoteList({noteList}: NoteListProps) {
   return (
     <>
-      {noteList.map(note => <div key={note.id}>{note.content}</div>)}
+      {noteList.map(note => (
+        <NoteCard key={note.id} note={note}/>
+      ))}
     </>
   )
 }
