@@ -1,42 +1,36 @@
-import {Button, Input, Textarea} from "./NoteInput.style.ts";
-import useNoteForm from "../../hooks/useNoteForm.ts";
-import {ChangeEvent} from "react";
-
+import {Button, Stack, TextField} from "@mui/material";
+import {useState} from "react";
+import {NoteForm} from "../../types/types.ts";
 
 function NoteInput() {
-  const {newNote, setNewNote} = useNoteForm();
-
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewNote((prevState) => ({
-      ...prevState,
-      title: e.target.value
-    }));
-  };
-
-  const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setNewNote((prevState) => ({
-      ...prevState,
-      content: e.target.value
-    }));
-  };
+  const [newNote, setNewNote] = useState<NoteForm>({
+    title: "",
+    content: ""
+  });
 
   const handleNewMemo = () => {
     console.log(newNote);
   };
 
   return (
-    <>
-      <Button onClick={handleNewMemo}>추가</Button>
-      <Input
+    <Stack gap={1}>
+      <TextField
+        id="title"
+        label="제목"
+        variant="outlined"
         value={newNote.title}
-        onChange={handleTitleChange}
+        onChange={(e) => setNewNote((prevState) => ({...prevState, title: e.target.value}))}
       />
-      <Textarea
+      <TextField
+        id="content"
+        label="내용"
+        variant="outlined"
         value={newNote.content}
-        onChange={handleContentChange}
+        onChange={(e) => setNewNote((prevState) => ({...prevState, content: e.target.value}))}
       />
-    </>
-  )
+      <Button variant="contained" onClick={handleNewMemo}>추가</Button>
+    </Stack>
+  );
 }
 
 export default NoteInput;
