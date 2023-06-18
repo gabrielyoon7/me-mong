@@ -2,7 +2,7 @@ import NoteCard from "../NoteCard";
 import {useSyncExternalStore} from "react";
 import {noteStore} from "../../store/noteStore.ts";
 import {Container} from "@mui/material";
-import SuperBigAlert from "../SuperBigAlert/SuperBigAlert.tsx";
+import SuperBigAlert from "../SuperBigAlert";
 
 function NoteList() {
   const noteList = useSyncExternalStore(noteStore.subscribe, noteStore.getSnapshot);
