@@ -20,7 +20,7 @@ function NoteInput({onClose}: NoteInputProps) {
   };
 
   return (
-    <Box sx={{minWidth: '500px'}} p={2}>
+    <Box p={2}>
       <Stack gap={1}>
         <TextField
           id="title"

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import {red} from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Note} from "../../types/types.ts";
+import {modalStore} from "../../store/modalStore.tsx";
 
 interface NoteCardProps {
   note: Note;
@@ -24,7 +25,7 @@ export default function NoteCard({note}: NoteCardProps) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" onClick={() => modalStore.open(<>삭제하시겠습니까?</>)}>
             <MoreVertIcon/>
           </IconButton>
         }

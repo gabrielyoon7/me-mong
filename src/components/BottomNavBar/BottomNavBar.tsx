@@ -1,7 +1,7 @@
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {useState} from "react";
-import {modalStore} from "../../store/modalStore.tsx";
+import {bottomSheetStore} from "../../store/bottomSheetStore.tsx";
 import NoteInput from "../NoteInput";
 
 function BottomNavBar() {
@@ -19,9 +19,9 @@ function BottomNavBar() {
         <BottomNavigationAction
           label="노트 작성하기"
           icon={<AddCircleIcon/>}
-          onClick={() => modalStore.open(
+          onClick={() => bottomSheetStore.open(
             <NoteInput
-              onClose={() => modalStore.close()}
+              onClose={() => bottomSheetStore.close()}
             />
           )}
         />
