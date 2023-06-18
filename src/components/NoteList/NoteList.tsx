@@ -1,17 +1,17 @@
-import {Note} from "../../types/types.ts";
 import NoteCard from "../NoteCard";
+import {useSyncExternalStore} from "react";
+import {noteStore} from "../../store/noteStore.ts";
+import {Container} from "@mui/material";
 
-interface NoteListProps {
-  noteList: Note[]
-}
+function NoteList() {
+  const noteList = useSyncExternalStore(noteStore.subscribe, noteStore.getSnapshot);
 
-function NoteList({noteList}: NoteListProps) {
   return (
-    <>
+    <Container>
       {noteList.map(note => (
         <NoteCard key={note.id} note={note}/>
       ))}
-    </>
+    </Container>
   )
 }
 

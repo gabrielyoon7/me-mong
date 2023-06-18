@@ -1,28 +1,21 @@
 import {Box, Button, Stack, TextField} from "@mui/material";
 import {useState} from "react";
-import {Note, NoteForm} from "../../types/types.ts";
+import {NoteForm} from "../../types/types.ts";
+import {noteStore} from "../../store/noteStore.ts";
 
 
 interface NoteInputProps {
-  setNoteList: (value: (((prevState: Note[]) => Note[]) | Note[])) => void;
   onClose: () => void;
 }
 
-function NoteInput({setNoteList, onClose}: NoteInputProps) {
+function NoteInput({onClose}: NoteInputProps) {
   const [newNote, setNewNote] = useState<NoteForm>({
     title: "",
     content: ""
   });
 
   const handleNewMemo = () => {
-    console.log(newNote);
-    const note: Note = {
-      date: "",
-      id: 0,
-      ...newNote
-    }
-    // TODO: msw로 이전 예정
-    setNoteList((prevState) => [...prevState, note]);
+    noteStore.addNote(newNote);
     onClose();
   };
 
