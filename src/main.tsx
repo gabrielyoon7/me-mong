@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import { worker } from "./mocks/browser.ts";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient()
 
@@ -20,6 +21,11 @@ async function main() {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <App />
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          position="bottom-left"
+          panelPosition="top"
+        />
       </QueryClientProvider>
     </React.StrictMode>,
   )
