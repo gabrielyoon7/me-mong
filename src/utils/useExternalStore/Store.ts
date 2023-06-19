@@ -1,7 +1,6 @@
-interface IStore<T> {
+export interface IStore<T> {
   subscribe: (listener: () => void) => () => void;
   emitChange: () => void;
-  getSnapshot?: () => T
 }
 
 class Store<T> implements IStore<T> {
@@ -19,7 +18,6 @@ class Store<T> implements IStore<T> {
       listener();
     }
   }
-
 }
 
 export default Store;
