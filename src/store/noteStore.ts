@@ -1,14 +1,13 @@
 import { Note, NoteForm } from "../types/types.ts";
-import Store, { IStore } from "../utils/useExternalStore/Store.ts";
+import Store from "../utils/useExternalStore/Store.ts";
 
 type StoreType = Note[];
 
-interface NoteStoreInterface<StoreType> extends IStore<StoreType> {
-  getSnapshot: () => StoreType;
-}
+class NoteStore extends Store<StoreType>{
 
-class NoteStore extends Store<StoreType> implements NoteStoreInterface<StoreType> {
-  private notes: StoreType = [];
+  constructor(initState: StoreType) {
+    super(initState);
+  }
 
   async addNote(noteForm: NoteForm) {
     const response = await fetch(`/memo/create`, {
@@ -23,13 +22,8 @@ class NoteStore extends Store<StoreType> implements NoteStoreInterface<StoreType
       date: new Date().toDateString(),
       ...noteForm,
     };
-    this.notes = [...this.notes, newNote];
-    this.emitChange();
+    this.setState([...this.state, newNote]);
   }
-
-  getSnapshot = () => {
-    return this.notes;
-  };
 }
 
-export const noteStore = new NoteStore();
+export const noteStore = new NoteStore([]);
