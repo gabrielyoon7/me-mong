@@ -1,19 +1,10 @@
 import { Note, NoteForm } from "../types/types.ts";
 
 class NoteStore {
-  private static instance: NoteStore;
-  private nextId = 0;
   private notes: Note[] = [];
   private listeners: Array<() => void> = [];
 
-  public static getInstance() {
-    if (!NoteStore.instance) {
-      NoteStore.instance = new NoteStore();
-    }
-    return NoteStore.instance;
-  }
-
-  public async addNote(noteForm: NoteForm) {
+  addNote = async (noteForm: NoteForm) => {
     const response = await fetch(`/memo/create`, {
       method: 'POST',
       body: JSON.stringify(noteForm)
@@ -22,24 +13,24 @@ class NoteStore {
     console.log(data);
 
     const newNote: Note = {
-      id: this.nextId++,
+      id: Math.random(),
       date: new Date().toDateString(),
       ...noteForm,
     };
     this.notes = [...this.notes, newNote];
     this.emitChange();
-  }
+  };
 
-  public subscribe(listener: () => void): () => void {
+  subscribe = (listener: () => void) => {
     this.listeners = [...this.listeners, listener];
     return () => {
       this.listeners = this.listeners.filter((l) => l !== listener);
     };
-  }
+  };
 
-  public getSnapshot() {
+  getSnapshot = () => {
     return this.notes;
-  }
+  };
 
   private emitChange() {
     for (const listener of this.listeners) {
@@ -48,5 +39,4 @@ class NoteStore {
   }
 }
 
-const noteStore = NoteStore.getInstance();
-export { noteStore };
+export const noteStore = new NoteStore();
