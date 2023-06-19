@@ -6,6 +6,8 @@ import useExternalState from "../../hooks/useExternalState.ts";
 import { Note } from "../../types/types.ts";
 
 function NoteList() {
+
+
   const [noteList, setNoteList] = useExternalState<Note[]>(noteStore);
 
   if (noteList.length === 0) {

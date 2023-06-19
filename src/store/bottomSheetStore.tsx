@@ -1,45 +1,32 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+import Store from "../utils/useExternalStore/Store.ts";
 
-interface BottomSheet {
+type StoreType = {
   open: boolean;
-  component: ReactNode
+  component: ReactNode;
 }
 
-let bottomSheet: BottomSheet = {
-  open: false,
-  component: <></>
-}
+class BottomSheetStore extends Store<StoreType>{
+  constructor(initState: StoreType) {
+    super(initState);
+  }
 
-let listeners: Array<() => void> = [];
-
-export const bottomSheetStore = {
-  open: (component: ReactNode) => {
-    bottomSheet = {
+  open(component: ReactNode) {
+    this.setState({
       open: true,
       component: component
-    }
-    emitChange();
-  },
-  close: () => {
-    bottomSheet = {
+    })
+  }
+
+  close() {
+    this.setState({
       open: false,
       component: <></>
-    }
-    emitChange();
-  },
-  subscribe: (listener: () => void) => {
-    listeners = [...listeners, listener];
-    return () => {
-      listeners = listeners.filter((l) => l !== listener);
-    };
-  },
-  getSnapshot: () => {
-    return bottomSheet;
-  },
-};
-
-function emitChange() {
-  for (const listener of listeners) {
-    listener();
+    })
   }
 }
+
+export const bottomSheetStore = new BottomSheetStore({
+  open: false,
+  component: <></>
+});

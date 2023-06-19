@@ -1,45 +1,32 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+import Store from "../utils/useExternalStore/Store.ts";
 
-interface Modal {
+type StoreType = {
   open: boolean;
-  component: ReactNode
+  component: ReactNode;
 }
 
-let modal: Modal = {
-  open: false,
-  component: <></>
-}
+class ModalStore extends Store<StoreType>{
+  constructor(initState: StoreType) {
+    super(initState);
+  }
 
-let listeners: Array<() => void> = [];
-
-export const modalStore = {
-  open: (component: ReactNode) => {
-    modal = {
+  open(component: ReactNode) {
+    this.setState({
       open: true,
       component: component
-    }
-    emitChange();
-  },
-  close: () => {
-    modal = {
+    })
+  }
+
+  close() {
+    this.setState({
       open: false,
       component: <></>
-    }
-    emitChange();
-  },
-  subscribe: (listener: () => void) => {
-    listeners = [...listeners, listener];
-    return () => {
-      listeners = listeners.filter((l) => l !== listener);
-    };
-  },
-  getSnapshot: () => {
-    return modal;
-  },
-};
-
-function emitChange() {
-  for (const listener of listeners) {
-    listener();
+    })
   }
 }
+
+export const modalStore = new ModalStore({
+  open: false,
+  component: <></>
+});
