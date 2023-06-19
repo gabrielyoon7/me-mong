@@ -1,10 +1,10 @@
 import { Note, NoteForm } from "../types/types.ts";
+import Store from "../utils/useExternalStore/Store.ts";
 
-class NoteStore {
+class NoteStore extends Store<Note[]> {
   private notes: Note[] = [];
-  private listeners: Array<() => void> = [];
 
-  addNote = async (noteForm: NoteForm) => {
+  async addNote(noteForm: NoteForm) {
     const response = await fetch(`/memo/create`, {
       method: 'POST',
       body: JSON.stringify(noteForm)
@@ -19,24 +19,12 @@ class NoteStore {
     };
     this.notes = [...this.notes, newNote];
     this.emitChange();
-  };
-
-  subscribe = (listener: () => void) => {
-    this.listeners = [...this.listeners, listener];
-    return () => {
-      this.listeners = this.listeners.filter((l) => l !== listener);
-    };
-  };
+  }
 
   getSnapshot = () => {
     return this.notes;
   };
 
-  private emitChange() {
-    for (const listener of this.listeners) {
-      listener();
-    }
-  }
 }
 
 export const noteStore = new NoteStore();
