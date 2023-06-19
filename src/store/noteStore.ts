@@ -1,11 +1,19 @@
-import {Note, NoteForm} from "../types/types.ts";
+import { Note, NoteForm } from "../types/types.ts";
 
-let nextId = 0;
-let notes: Note[] = [];
-let listeners: Array<() => void> = [];
+class NoteStore {
+  private static instance: NoteStore;
+  private nextId = 0;
+  private notes: Note[] = [];
+  private listeners: Array<() => void> = [];
 
-export const noteStore = {
-  addNote: async (noteForm: NoteForm) => {
+  public static getInstance() {
+    if (!NoteStore.instance) {
+      NoteStore.instance = new NoteStore();
+    }
+    return NoteStore.instance;
+  }
+
+  public async addNote(noteForm: NoteForm) {
     const response = await fetch(`/memo/create`, {
       method: 'POST',
       body: JSON.stringify(noteForm)
@@ -14,26 +22,31 @@ export const noteStore = {
     console.log(data);
 
     const newNote: Note = {
-      id: nextId++,
+      id: this.nextId++,
       date: new Date().toDateString(),
       ...noteForm,
     };
-    notes = [...notes, newNote];
-    emitChange();
-  },
-  subscribe: (listener: () => void) => {
-    listeners = [...listeners, listener];
-    return () => {
-      listeners = listeners.filter((l) => l !== listener);
-    };
-  },
-  getSnapshot: () => {
-    return notes;
-  },
-};
+    this.notes = [...this.notes, newNote];
+    this.emitChange();
+  }
 
-function emitChange() {
-  for (const listener of listeners) {
-    listener();
+  public subscribe(listener: () => void): () => void {
+    this.listeners = [...this.listeners, listener];
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  }
+
+  public getSnapshot() {
+    return this.notes;
+  }
+
+  private emitChange() {
+    for (const listener of this.listeners) {
+      listener();
+    }
   }
 }
+
+const noteStore = NoteStore.getInstance();
+export { noteStore };
